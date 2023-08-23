@@ -1,0 +1,8 @@
+#!/bin/bash
+connected="󰤨"
+disconnected="󰤭"
+
+state=$(cat /sys/class/net/wlp0s20f3/operstate)
+
+[ $state = down ] && echo $disconnected && exit
+echo $connected

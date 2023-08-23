@@ -1,0 +1,19 @@
+#!/bin/bash
+
+any_events() {
+    t=$(text)
+    [ "$t" != "" ] && echo "true" || echo "false"
+}
+
+text(){
+    agenda=$(i3-agenda -c ~/.google_credentials.json --today --no-event-text "" --cachettl 0 )
+    echo $agenda
+}
+
+show_time() {
+    echo $(text | grep -Eo '[0-9]{2}:[0-9]{2}')
+}
+
+[ "$1" = "text" ] && text && exit
+[ "$1" = "any_events" ] && any_events && exit
+[ "$1" = "time" ] && show_time && exit

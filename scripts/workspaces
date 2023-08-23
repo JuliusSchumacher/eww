@@ -1,0 +1,24 @@
+#!/bin/bash
+print_workspaces() {
+    if [ ! -z $1 ]; then
+        all_workspaces=$(hyprctl workspaces -j | jq 'sort_by( .id )' | jq ".[] | select(.monitor ==\"$1\" ) | select( .name != \"special\") | .id" )
+    else
+        all_workspaces=$(hyprctl workspaces -j | jq 'sort_by( .id )' | jq '.[].id' )
+    fi
+    active_workspace=$(hyprctl monitors -j | jq '.[].activeWorkspace.id')
+
+    echo "(box :class \"workspaces\" :orientation \"v\""
+    for ws in $all_workspaces; do
+        echo $active_workspace | grep -q -w $ws
+        if [ $? -eq 1 ]; then
+            echo "(button :onclick \"hyprctl dispatch workspace ${ws}\"  \"\")"
+        else
+            echo "(button :class \"active\" :onclick \"hyprctl dispatch workspace ${ws}\"  \"\")"
+
+        fi
+
+    done
+    echo ")"
+}
+
+print_workspaces $1

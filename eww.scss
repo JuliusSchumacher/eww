@@ -1,0 +1,90 @@
+// Global
+*{
+  all: unset;
+}
+
+@import "/home/julius/.cache/wal/colors.scss";
+
+$black: $color1;
+$gray: $color8;
+$red: $color1;
+$green: $color2;
+$yellow: $color3;
+$blue: $color4;
+$magenta: $color5;
+$cyan: $color6;
+$white: $foreground;
+
+// EWW BAR
+.eww_bar{
+  color: $foreground;
+  padding-bottom: 25px;
+  padding-top: 25px;
+  font-family: JetBrainsMono Nerd Font;
+  font-size: 25px;
+}
+
+ .clock {
+  font-weight: 200;
+  background-color: $magenta;
+  color: $background;
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-size: 30px;
+}
+
+ .date {
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+scale trough {
+  all: unset;
+  background-color: $foreground;
+  border-radius: 5px;
+  min-height: 80px;
+  min-width: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.volbar trough highlight {
+  background-color: $green;
+  border-radius: 5px;
+}
+
+.controls {
+  background-color: $background;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.workspaces {
+  background-color: $background;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+.active {
+  color: $red;
+}
+.battext {
+  font-size: 20px;
+}
+.music-btn, .mail-btn {
+  font-size: 35px;
+  color: $blue;
+  padding: 0;
+}
+.music-text, .mail-text, .events-text {
+  font-size: 20px;
+}
+.mail-btn {
+  padding-left: 0;
+  color: $magenta;
+}
+
+.events-btn {
+  color: $yellow;
+  font-size: 35px;
+
+}

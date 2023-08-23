@@ -1,0 +1,278 @@
+(defvar eww "/usr/bin/eww")
+
+
+(defwidget bat []
+    (eventbox
+        :onhover "${eww} update showbat=true"
+        :onhoverlost "${eww} update showbat=false"
+        (box
+            :orientation "v"
+            :space-evenly false
+            :spacing "0"
+            (label :text battery-icon )
+            (revealer
+                :transition "slideup"
+                :reveal showbat
+                :duration "550ms"
+                (label :class "battext" :text battery)
+            )
+        )
+    )
+)
+(defvar showbat false)
+(defpoll battery :interval "5s" "scripts/battery")
+(defpoll battery-icon :interval "5s" "scripts/battery-icon")
+
+
+(defwidget clock []
+    (box
+        :class "clock"
+        :orientation "v"
+        :spacing "-12"
+        (label :text hours)
+        (label :text minutes)
+     )
+)
+(defpoll hours :interval "10s" "date +%H")
+(defpoll minutes :interval "10s" "date +%M")
+
+(defwidget date []
+    (box
+        :class "date"
+        :orientation "v"
+        :space-evenly true
+        (label :text month)
+        (label :text date)
+    )
+)
+(defpoll date :interval "10m" "date +%d")
+(defpoll month :interval "10m" "date +%b")
+
+(defwidget wifi []
+    (box
+        :orientation "v"
+        :space-evenly false
+        (label :text wifi-icon :xalign "0.37" :tooltip wifi-name )
+    )
+)
+(defpoll wifi-icon :interval "10s" "scripts/wifi-icon")
+(defpoll wifi-name :interval "10s" "scripts/wifi-name")
+
+(defwidget vol []
+    (eventbox
+        :onhover "${eww} update showvol=true"
+        :onhoverlost "${eww} update showvol=false"
+        (box
+            :orientation "v"
+            :space-evenly false
+            :spacing "4"
+            (revealer
+                :transition "slideup"
+                :reveal showvol
+                :duration "550ms"
+                (scale
+                    :class "volbar"
+                    :value current-volume
+                    :orientation "v"
+                    :min 0.0
+                    :max 101.0
+                    :onchange "pamixer --set-volume {}"
+                    :flipped true
+                )
+            )
+            (button
+                :class "volbtn"
+                :onclick "pamixer -t"
+                (label :text volume-icon )
+            )
+        )
+    )
+)
+
+(defpoll current-volume
+    :interval "1s"
+    "scripts/volume level"
+)
+(defpoll volume-icon
+    :interval "1s"
+    "scripts/volume icon"
+)
+(defvar showvol false)
+
+(defpoll workspace :interval "100ms" "scripts/workspaces eDP-1")
+(defwidget workspaces []
+(literal :content workspace))
+
+(defpoll externalworkspace :interval "100ms" "scripts/workspaces DP-3")
+(defwidget externalworkspaces []
+(literal :content externalworkspace))
+
+(defwidget music []
+    (box
+        (revealer
+            :reveal is_playing
+            :transition "slideup"
+            :duration "550ms"
+            (box
+                :class "music"
+                :orientation "v"
+                :spacing "-10"
+                :halign "center"
+                (button
+                    :class "music-btn"
+                    :onclick "playerctl play-pause"
+                    (label :text "󰝚" :xalign "0.4")
+                )
+                (label :text music :class "music-text")
+                )
+        )
+    )
+)
+(deflisten music "scripts/music text")
+(defpoll is_playing :interval "1s" "scripts/music playing")
+
+(defwidget mail []
+    (box
+        (revealer
+            :reveal {mail-count != ""}
+            :transition "slideup"
+            :duration "550ms"
+            (box
+                :class "mail"
+                :orientation "v"
+                :spacing "-10"
+                (button
+                    :class "mail-btn"
+                    :onclick "firefox https://mail.google.com/mail/u/0/#inbox"
+                    (label :text "󰇮" :xalign "0.4")
+                )
+                (label :text mail-count  :class "mail-text")
+                )
+        )
+    )
+)
+(deflisten mail-count "scripts/gmail/launch.py -ns -nc")
+
+(defwidget events []
+    (box
+        (revealer
+            :reveal any-events
+            :transition "slideup"
+            :duration "550ms"
+            (box
+                :class "mail"
+                :orientation "v"
+                :spacing "-10"
+                (button
+                    :class "events-btn"
+                    :onclick "firefox https://calendar.google.com/calendar/u/0/r/week"
+                    (label :text "󰃭" :xalign "0.45")
+                )
+                    (label :class "events-text" :text events-time )
+            )
+        )
+    )
+)
+(defpoll any-events :interval "30s" "scripts/agenda any_events")
+(defpoll events-time :interval "30s" "scripts/agenda time")
+
+(defwidget controls []
+    (box
+        :class "controls"
+        :orientation "v"
+        :space-evenly false
+        :spacing "10"
+        (vol)
+        (wifi)
+        (bat)
+    )
+)
+
+
+(defwidget top []
+    (box
+        :orientation "v"
+        :space-evenly false
+        :spacing "15"
+        (clock)
+        (workspaces)
+    )
+)
+(defwidget secondtop []
+    (box
+        :orientation "v"
+        :space-evenly false
+        :spacing "15"
+        (clock)
+        (externalworkspaces)
+    )
+)
+
+(defwidget middle []
+    (box
+        :orientation "v"
+        :space-evenly false
+    )
+)
+
+(defwidget bottom []
+    (box
+        :space-evenly false
+        :orientation "v"
+        :valign "end"
+        :spacing "5"
+        (events)
+        (mail)
+        (music)
+        (date)
+        (controls)
+    )
+)
+
+(defwidget bar []
+    (centerbox
+        :class "eww_bar"
+        :orientation "v"
+        (top)
+        (middle)
+        (bottom)
+    )
+)
+(defwidget secondbar []
+    (centerbox
+        :class "eww_bar"
+        :orientation "v"
+        (secondtop)
+        (middle)
+        (bottom)
+    )
+)
+
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry
+        :x "25"
+        :y "0"
+        :height "100%"
+        :anchor "left center"
+    )
+    :stacking "fg"
+    :exclusive true
+    :focusable false
+    (bar)
+)
+
+(defwindow secondbar
+    :monitor 1
+    :geometry (geometry
+        :x "25"
+        :y "0"
+        :height "100%"
+        :anchor "left center"
+    )
+    :stacking "fg"
+    :exclusive true
+    :focusable false
+    (secondbar)
+)

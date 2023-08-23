@@ -1,0 +1,27 @@
+#!/bin/bash
+volume0=󰕿
+volume1=
+volume2=墳
+mute=󰝟
+
+level() {
+    l=$(pamixer --get-volume)
+    echo $l
+}
+
+icon() {
+    isMute=$(pamixer --get-mute)
+    l=$(level)
+    if [ $isMute = true ]; then
+        echo $mute;
+    elif [ $l -gt 80 ]; then
+        echo $volume2
+    elif [ $l -gt 40 ]; then
+        echo $volume1
+    else
+        echo $volume0
+    fi
+}
+
+[ "$1" = "level" ] && level && exit
+[ "$1" = "icon" ] && icon && exit

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+scrolling_text(){
+    zscroll -l 5 -d 0.4 -u true "playerctl metadata --format '{{artist}} - {{title}}'"
+}
+
+is_playing() {
+    status=$(playerctl status 2> /dev/null)
+    echo $status | grep -q "Playing" && echo "true" || echo "false"
+}
+
+
+[ "$1" = "text" ] && scrolling_text && exit
+[ "$1" = "playing" ] && is_playing && exit

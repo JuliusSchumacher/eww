@@ -1,0 +1,4 @@
+#!/bin/bash
+BATPERC=$(acpi --battery | cut -d, -f2)
+BATVAL=$((${BATPERC//%}))
+echo $BATVAL

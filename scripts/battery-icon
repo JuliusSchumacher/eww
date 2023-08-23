@@ -1,0 +1,24 @@
+#!/bin/bash
+
+icon0=
+icon1=
+icon2=
+icon3=
+icon4=
+icon5=
+
+val=$(~/.config/eww/scripts/battery)
+
+if [ $val -gt 95 ]; then
+    echo $icon5
+elif [ $val -gt 75 ]; then
+    echo $icon4
+elif [ $val -gt 50 ]; then
+    echo $icon3
+elif [ $val -gt 25 ]; then
+    echo $icon2
+elif [ $val -gt 10 ]; then
+    echo $icon1
+else
+    echo $icon0
+fi
