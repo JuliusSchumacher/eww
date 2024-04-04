@@ -9,6 +9,7 @@
             :orientation "v"
             :space-evenly false
             :spacing "0"
+            :class {battery-low == "true" ? "lowbat" : ""}
             (label :text battery-icon )
             (revealer
                 :transition "slideup"
@@ -22,6 +23,7 @@
 (defvar showbat false)
 (defpoll battery :interval "5s" "scripts/battery")
 (defpoll battery-icon :interval "5s" "scripts/battery-icon")
+(defpoll battery-low :interval "5s" "scripts/battery-low")
 
 
 (defwidget clock []

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+val=$(~/.config/eww/scripts/battery)
+
+if [ $val -lt 5 ]; then
+    echo "true"
+else
+    echo "false"
+fi
