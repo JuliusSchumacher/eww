@@ -257,6 +257,7 @@
         :x "25"
         :y "0"
         :height "100%"
+        :width "65"
         :anchor "left center"
     )
     :stacking "fg"
@@ -271,6 +272,7 @@
         :x "25"
         :y "0"
         :height "100%"
+        :width "65"
         :anchor "left center"
     )
     :stacking "fg"

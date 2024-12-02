@@ -1,7 +1,7 @@
 #!/bin/bash
 print_workspaces() {
     if [ ! -z $1 ]; then
-        all_workspaces=$(hyprctl workspaces -j | jq 'sort_by( .id )' | jq ".[] | select(.monitor ==\"$1\" ) | select( .name != \"special\") | .id" )
+        all_workspaces=$(hyprctl workspaces -j | jq 'sort_by( .id )' | jq ".[] | select(.monitor ==\"$1\" ) | select( .name != \"special:special\") | .id" )
     else
         all_workspaces=$(hyprctl workspaces -j | jq 'sort_by( .id )' | jq '.[].id' )
     fi
